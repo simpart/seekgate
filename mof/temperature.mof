@@ -1,0 +1,21 @@
+<setting>
+    <tag load="mofron-layout-grid">Grid</tag>
+</setting>
+
+<!-- start monitoring -->
+<script name=start run=external>
+temp_val.text("");
+</script>
+
+<script name=stop run=external>
+temp_val.text("-");
+</script>
+
+<div layout=Grid:[50,50] style="margin-top:0.3rem;">
+    <div>
+        <Text name=temp_val size=1rem effect=HrzPos:right>"-"</Text>
+    </div>
+    <div>
+        <Text size=1rem style="margin-left:0.25rem;">℃</Text>
+    </div>
+</div>

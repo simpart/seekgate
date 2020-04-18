@@ -1,0 +1,40 @@
+<setting>
+    <!-- component -->
+    <tag load="mofron-comp-slidemenu">SlideMenu</tag>
+    <tag load="mofron-comp-txtframe">TxtFrame</tag>
+</setting>
+
+<!-- menu close -->
+<script name=mnu_cls run=init>
+menu_cmp.visible(false);
+</script>
+
+<!-- select event -->
+<script name=sel_evt run=init>
+console.log("select");
+</script>
+
+
+<SlideMenu name=menu_cmp offset=-0.01rem position=right base-color=[230,255,230] select=-1 reselect=true>
+    <select-event>@sel_evt</select-event>
+    <style>padding-top:0.8rem;</style>
+    <!-- <item size=(1.5rem,0.5rem) base-color=[245,255,245]> -->
+    <item size=(2rem,0.5rem)>
+        <TxtFrame base-color=[245,255,245]>
+            <text size=0.2rem>Notify</text>
+        </TxtFrame>
+        <TxtFrame base-color=[245,255,245]>
+            <text size=0.2rem>Threshold</text>
+        </TxtFrame>
+        <TxtFrame base-color=[245,255,245]>
+            <text size=0.2rem>Log</text>
+        </TxtFrame>
+        <TxtFrame base-color=[245,255,245]>
+            <text size=0.2rem>FullScreen</text>
+        </TxtFrame>
+    </item>
+    <Text effect=HrzPos event=Click:@mnu_cls>
+        <style lock=true>margin-top:0.3rem;position:absolute;</style>
+        <text>&times;&nbsp;CLOSE</text>
+    </Text>
+</SlideMenu>

@@ -1,0 +1,73 @@
+<setting>
+    <tag load="mofron-comp-frame">Frame</tag>
+    <tag load="mofron-comp-image">Image</tag>
+    <tag load="mofron-effect-synwwid">SynwWid</tag>
+    <tag load="mofron-effect-hrzpos">HrzPos</tag>
+    <tag load="mofron-effect-vrtpos">VrtPos</tag>
+</setting>
+
+<!-- initialize image height -->
+<script>
+sby.height(156 * (window.innerWidth/208) + 'px');
+act.height(156 * (window.innerWidth/208) + 'px');
+</script>
+
+<script run=init>
+let msgrsv = (msg) => {
+    try {
+        let srv_ret = JSON.parse(msg.data);
+        act.base64("data:image/bmp;base64," + srv_ret.image);
+    } catch (e) {
+        console.error(e.stack);
+        throw e;
+    }
+}
+</script>
+
+<!-- start monitoring -->
+<script name=start run=external>
+
+//if (null === wsock) {
+//    wsock = new WebSocket('ws:/'+ location.host +':5000');
+//    wsock.addEventListener('open', (e) => {
+//        ws_conn = true;
+//    });
+//    wsock.addEventListener('message', msgrsv);
+//    
+//    setTimeout(
+//        () => {
+//            if (false === ws_conn) {
+//                alert("connection error " + 'ws:/'+ location.host +':5000');
+//            }
+//        },
+//        1000
+//    );
+//}
+
+sby.visible(false);
+act.visible(true);
+</script>
+
+<!-- start monitoring -->
+<script name=stop run=external>
+
+//if (null !== wsock) {
+//    wsock.close();
+//    wsock = null;
+//}
+
+act.visible(false);
+sby.visible(true);
+</script>
+
+<div>
+    <Frame name=sby effect=SynwWid base-color=[220,220,220]>
+        <Image src="./img/standby.png">
+            <effect>
+                <HrzPos></HrzPos>
+                <VrtPos></VrtPos>
+            </effect>
+        </Image>
+    </Frame>
+    <Image name=act effect=SynwWid visible=false></Image>
+</div>
