@@ -65,7 +65,7 @@ int main (int argc,char *argv[]) {
             snprintf(
                 (char *) msg,
                 MSG_BUFSIZE-1,
-                "{\"image\":\"%s\",\"temperature\":\"%f\"}",
+                "{\"image\":\"%s\",\"temperature\":\"%4.2f\"}",
                 img_buf,
                 info.temperature.max
             );
