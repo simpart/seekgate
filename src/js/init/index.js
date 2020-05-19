@@ -203,6 +203,10 @@ try {
     cmp0.config({title:"SeekGate",mainColor:[230,255,230],baseColor:[253,253,253],theme:{Text:{target:null,config:{font:"Cairo",mainColor:[96,131,127]}}},style:{'overflow':'hidden'},header:new mofron.class.PullConf({navi:cmp0_1})});
 
     /* script (before) */
+    window.onbeforeunload = function(e) {
+      console.log('beforeunload');
+      return;
+    };
     sby.height(156 * (window.innerWidth/208) + 'px');
     act.height(156 * (window.innerWidth/208) + 'px');
 
@@ -211,7 +215,7 @@ try {
     root_cmp.visible(true,() => {try{
 
         /* script (after) */
-        class Thermo{constructor(t){try{if("number"!=typeof t)throw new Error("invalid parameter");this.m_threshold=t,this.m_status="none"}catch(t){throw console.error(t.stack),t}}start(){try{this.m_wsock=new WebSocket("ws:/"+location.host+":5000","thermo");let t=this,r=!1;this.m_wsock.addEventListener("open",e=>{r=!0,t.wsk_callback()(!0)}),this.m_wsock.addEventListener("close",r=>{t.wsk_callback()(!1)}),setTimeout(()=>{!1===r&&alert("failed connect to thermo camera")},5e3),this.m_wsock.addEventListener("message",r=>{if(""===r.data)return;let e=JSON.parse(r.data);t.inf_event()(e);let o=null;o=this.m_threshold-1>e.temperature?"none":this.m_threshold>e.temperature?"pass":"alert",this.m_status!==o&&(this.m_status=o,t.sts_event()(o))})}catch(t){throw console.error(t.stack),t}}wsk_callback(t){try{if(void 0===t){if(void 0===this.m_wskcb)throw new Error("could not find callback");return this.m_wskcb}if("function"!=typeof t)throw new Error("invalid parameter");this.m_wskcb=t}catch(t){throw console.error(t.stack),t}}inf_event(t){try{if(void 0===t){if(void 0===this.m_infcb)throw new Error("could not find event");return this.m_infcb}if("function"!=typeof t)throw new Error("invalid parameter");this.m_infcb=t}catch(t){throw console.error(t.stack),t}}sts_event(t){try{if(void 0===t){if(void 0===this.m_stscb)throw new Error("could not find event");return this.m_stscb}if("function"!=typeof t)throw new Error("invalid parameter");this.m_stscb=t}catch(t){throw console.error(t.stack),t}}}
+        class Thermo{constructor(t){try{if("number"!=typeof t)throw new Error("invalid parameter");this.m_threshold=t,this.m_status="none",thm_obj=this,window.onbeforeunload=()=>{thm_obj.close()}}catch(t){throw console.error(t.stack),t}}start(){try{this.m_wsock=new WebSocket("ws:/"+location.host+":5000","thermo");let t=this,r=!1;this.m_wsock.addEventListener("open",e=>{r=!0,t.wsk_callback()(!0)}),this.m_wsock.addEventListener("close",r=>{t.wsk_callback()(!1)}),setTimeout(()=>{!1===r&&alert("failed connect to thermo camera")},5e3),this.m_wsock.addEventListener("message",r=>{if(""===r.data)return;let e=JSON.parse(r.data);t.inf_event()(e);let o=null;o=this.m_threshold-1>e.temperature?"none":this.m_threshold>e.temperature?"pass":"alert",this.m_status!==o&&(this.m_status=o,t.sts_event()(o))})}catch(t){throw console.error(t.stack),t}}close(){try{this.m_wsock.close()}catch(t){throw console.error(t.stack),t}}wsk_callback(t){try{if(void 0===t){if(void 0===this.m_wskcb)throw new Error("could not find callback");return this.m_wskcb}if("function"!=typeof t)throw new Error("invalid parameter");this.m_wskcb=t}catch(t){throw console.error(t.stack),t}}inf_event(t){try{if(void 0===t){if(void 0===this.m_infcb)throw new Error("could not find event");return this.m_infcb}if("function"!=typeof t)throw new Error("invalid parameter");this.m_infcb=t}catch(t){throw console.error(t.stack),t}}sts_event(t){try{if(void 0===t){if(void 0===this.m_stscb)throw new Error("could not find event");return this.m_stscb}if("function"!=typeof t)throw new Error("invalid parameter");this.m_stscb=t}catch(t){throw console.error(t.stack),t}}}
         let thm_prs = () => {
             try {
                 let thd_txt = dropd.text()[dropd.select()].text();

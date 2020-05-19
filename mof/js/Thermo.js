@@ -8,6 +8,11 @@ class Thermo {
 	    }
 	    this.m_threshold = thd;
 	    this.m_status    = "none";
+	    
+	    thm_obj = this;
+	    window.onbeforeunload = () => {
+	        thm_obj.close();
+            };
 	} catch (e) {
             console.error(e.stack);
 	    throw e;
@@ -73,6 +78,15 @@ class Thermo {
             console.error(e.stack);
             throw e;
 	}
+    }
+      
+    close () {
+        try {
+	    this.m_wsock.close();
+	} catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
     }
 
     wsk_callback (fnc) {

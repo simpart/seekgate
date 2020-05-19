@@ -14,12 +14,12 @@
     </access-style>
 </setting>
 
-<!--
-<script src="./mof/js/Thermo.js" run=init></script>
-<script run=after>
-let thermo = new Thermo([moni, temp, swch]);
+<script>
+window.onbeforeunload = function(e) {
+  console.log('beforeunload');
+  return;
+};
 </script>
--->
 
 <script src="./mof/js/Thermo.js" run=after></script>
 <script run=after>
