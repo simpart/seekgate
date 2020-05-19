@@ -55,7 +55,7 @@ class Thermo {
 		    let msg_obj = JSON.parse(msg.data);
                     thermo.inf_event()(msg_obj);
                     let cur_sts = null;
-                    if ((this.m_threshold - 1.5) > msg_obj.temperature) {
+                    if ((this.m_threshold - 1) > msg_obj.temperature) {
                         cur_sts = "none";
 		    } else if (this.m_threshold > msg_obj.temperature) {
                         cur_sts = "pass";
