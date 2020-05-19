@@ -61,21 +61,17 @@ static int wsck_callback ( struct lws *wsi, enum lws_callback_reasons reason, vo
                 head = pss;
             }
             client_count++;
-            printf("established\n");
-            
-            //printf("wsi:%p\n", wsi);
-            //unsigned char * test_msg = (unsigned char *) malloc(10);
-            //memset(test_msg, 0x00, 10);
-            //snprintf((char *) test_msg, 9,"test");
-            //lws_write(wsi, test_msg, 10, LWS_WRITE_TEXT);
-            
+            // printf("established\n");
         } else if (LWS_CALLBACK_PROTOCOL_DESTROY == reason) {
-            //lws_ll_fwd_remove(struct per_session_data__minimal, pss_list, pss, vhd->pss_list);
             client_count--;
-            printf("disconnected: %d\n", user);
+            // printf("disconnected\n");
+        } else if (LWS_CALLBACK_WS_PEER_INITIATED_CLOSE == reason) {
+            lws_ll_fwd_remove(struct per_session_data__minimal, pss_list, pss, vhd->pss_list);
+            client_count--;
+            // printf("close\n");
+        } else {
+            // printf("websock: %d\n", reason);
         }
-
-        //printf("websock\n");
         return 0;
     } catch (char const* err) {
         cout << "[error]" << err << ": " << __FILE__ << " -> " << __LINE__ << endl;
@@ -88,8 +84,7 @@ void wsck_sendall (unsigned char *buf, size_t len) {
         struct per_session_data__minimal *cur = head;
         
         for (int i=client_count; i > 0 ;i--) {
-            //printf("send wsi:%p\n", cur->wsi);
-            lws_write(cur->wsi, buf, len, LWS_WRITE_TEXT);
+//            lws_write(cur->wsi, buf, len, LWS_WRITE_TEXT);
             cur = cur->pss_list;
         }
     } catch (char const* err) {

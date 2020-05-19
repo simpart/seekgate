@@ -51,6 +51,7 @@ int main (int argc,char *argv[]) {
 	while (service_loop) {
             if (0 >= wsck_count()) {
                 sleep(5);
+                continue;
             }
             
             memset(msg, 0x00, MSG_BUFSIZE - LWS_PRE);
