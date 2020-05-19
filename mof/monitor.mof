@@ -62,7 +62,7 @@ sby.visible(true);
 
 <div>
     <Frame name=sby effect=SynwWid base-color=[220,220,220]>
-        <Image src="./img/standby.png">
+        <Image size=(1rem,1rem) src="./img/standby.png">
             <effect>
                 <HrzPos></HrzPos>
                 <VrtPos></VrtPos>

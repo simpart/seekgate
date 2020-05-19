@@ -2,6 +2,15 @@
     <!-- component -->
     <tag load="mofron-comp-slidemenu">SlideMenu</tag>
     <tag load="mofron-comp-txtframe">TxtFrame</tag>
+    <tag load="mofron-comp-image">Image</tag>
+    <tag load="mofron-comp-dialog">Dialog</tag>
+    <tag load="mofron-comp-button">Button</tag>
+    <tag load="mofron-comp-dropdown">DropDown</tag>
+    <tag load="mofron-effect-synwwid">SynwWid</tag>
+    <tag load="mofron-effect-hrzpos">HrzPos</tag>
+    <tag load="mofron-effect-vrtpos">VrtPos</tag>
+    <tag load="mofron-event-clicktap">ClickTap</tag>
+    <tag load="tetraring4js">ttrg</tag>
 </setting>
 
 <!-- menu close -->
@@ -10,31 +19,99 @@ menu_cmp.visible(false);
 </script>
 
 <!-- select event -->
-<script name=sel_evt run=init>
-console.log("select");
+<script run=init>
+let sel_evt = (s1,s2,s3) => {
+    try {
+        if (0 === s2) {
+            ths_dlg.visible(true);
+        } else if (2 === s2) {
+            document.body.requestFullscreen();
+        }
+    } catch (e) {
+        console.error(e.stack);
+        throw e;
+    }
+};
+
+let dbtn_evt = (db1,db2,db3) => {
+    try {
+        if ("OK" === db1.text().text()) {
+            let data = "threshold=" + dropd.select();
+            let req  = new XMLHttpRequest();
+            req.onreadystatechange = function () {
+                if ( (this.readyState == 4) &&      // READYSTATE_COMPLETED
+                     (this.status == 200) ) {       // HTTP_STATUS_OK
+                    console.log( this.responseText );
+                }
+            }
+            req.open( 'POST', "http://" + location.hostname + "/cgi-bin/threshold.py" );
+            req.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+            req.send(data);
+        }
+        ths_dlg.visible(false);
+      
+    } catch (e) {
+        console.error(e.stack);
+        throw e;
+    }
+};
 </script>
 
+<script run=after>
+let req  = new XMLHttpRequest();
+req.onreadystatechange = function () {
+    if ( (this.readyState == 4) &&      // READYSTATE_COMPLETED
+         (this.status == 200) ) {       // HTTP_STATUS_OK
+        let resp = JSON.parse(this.responseText);
+        dropd.select(parseInt(resp.contents));
+    }
+}
+req.open( 'GET', "http://" + location.hostname + "/cgi-bin/threshold.py" );
+req.send();
 
-<SlideMenu name=menu_cmp offset=-0.01rem position=right base-color=[230,255,230] select=-1 reselect=true>
-    <select-event>@sel_evt</select-event>
-    <style>padding-top:0.8rem;</style>
-    <!-- <item size=(1.5rem,0.5rem) base-color=[245,255,245]> -->
-    <item size=(2rem,0.5rem)>
-        <TxtFrame base-color=[245,255,245]>
-            <text size=0.2rem>Notify</text>
-        </TxtFrame>
-        <TxtFrame base-color=[245,255,245]>
-            <text size=0.2rem>Threshold</text>
-        </TxtFrame>
-        <TxtFrame base-color=[245,255,245]>
-            <text size=0.2rem>Log</text>
-        </TxtFrame>
-        <TxtFrame base-color=[245,255,245]>
-            <text size=0.2rem>FullScreen</text>
-        </TxtFrame>
-    </item>
-    <Text effect=HrzPos event=Click:@mnu_cls>
-        <style lock=true>margin-top:0.3rem;position:absolute;</style>
-        <text>&times;&nbsp;CLOSE</text>
-    </Text>
-</SlideMenu>
+//dropd
+</script>
+
+<div>
+    <SlideMenu name=menu_cmp offset=-0.01rem position=right base-color=[245,255,245] select=-1 reselect=true>
+        <select-event>@sel_evt</select-event>
+        <style>padding-top:0.8rem;</style>
+        <!-- <item size=(1.5rem,0.5rem) base-color=[245,255,245]> -->
+        <item size=(2.2rem,0.6rem)>
+            <TxtFrame base-color=[245,255,245] x-center=false>
+                <border-width>(0.01rem,0rem,0.01rem,0rem)</border-width>
+                <Text size=0.25rem space=0.05rem style="margin-left:0.2rem;">Threshold</Text>
+            </TxtFrame>
+<!--
+            <TxtFrame base-color=[245,255,245] x-center=false>
+                <border-width>(0.01rem,0rem,0.01rem,0rem)</border-width>
+                <Text size=0.25rem space=0.05rem style="margin-left:0.2rem;">Log</Text>
+            </TxtFrame>
+            <TxtFrame base-color=[245,255,245] x-center=false>
+                <border-width>(0.01rem,0rem,0.01rem,0rem)</border-width>
+                <Text size=0.25rem space=0.05rem style="margin-left:0.2rem;">FullScreen</Text>
+            </TxtFrame>
+-->
+        </item>
+        <Image size=(0.3rem,0.3rem) event=ClickTap:@mnu_cls>
+            <style lock=true>position:absolute;top:0.25rem;left:0.2rem;</style>
+            <src>./img/close.png</src>
+        </Image>
+    </SlideMenu>
+    <Dialog name=ths_dlg header-height=0.6rem title="Threshold" button-event=@dbtn_evt>
+        <button size=(1.5rem,0.4rem)>
+            <Button color2=none color3=[0,0,0,0]>OK</Button>
+            <Button color2=none color3=[0,0,0,0]>Cancel</Button>
+        </button>
+        <effect>
+            <SynwWid>-0.05rem</SynwWid>
+        </effect>
+        <div style="margin-top:0.6rem;">
+            <DropDown name=dropd size=(1.5rem,0.5rem) base-color=[230,255,230] effect=HrzPos:center>
+                <text>
+                    [36.0℃,36.1℃,36.2℃,36.3℃,36.4℃,36.5℃,36.6℃,36.7℃,36.8℃,36.9℃,37.0℃,37.1℃,37.2℃,37.3℃,37.4℃]
+                </text>
+            </DropDown>
+        </div>
+    </Dialog>
+</div>

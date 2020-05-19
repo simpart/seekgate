@@ -1,28 +1,70 @@
 <setting>
     <tag load="mofron-comp-appbase">AppBase</tag>
     <tag load="mofron-comp-text">Text</tag>
+    <tag load="mofron-comp-image">Image</tag>
     <!-- effect -->
     <tag load="mofron-effect-hrzpos">HrzPos</tag>
     <!-- event -->
-    <tag load="mofron-event-click">Click</tag>
+    <tag load="mofron-event-clicktap">ClickTap</tag>
     <access-style>
-        <mobile orientation=portrait>font-size:1500%;</mobile>
+        <mobile orientation=portrait>font-size:625%;</mobile>
         <mobile orientation=landscape>font-size:800%;</mobile>
         <tablet>font-size:800%;</tablet>
         <default>font-size:625%;</default>
     </access-style>
 </setting>
 
+<!--
 <script src="./mof/js/Thermo.js" run=init></script>
-<script run=init>
+<script run=after>
 let thermo = new Thermo([moni, temp, swch]);
-let sw_evt = () => {
+</script>
+-->
+
+<script src="./mof/js/Thermo.js" run=after></script>
+<script run=after>
+let thm_prs = () => {
     try {
-        thermo.switching(!thermo.status());
+        let thd_txt = dropd.text()[dropd.select()].text();
+        let thd_val = parseFloat(thd_txt.substring(0, thd_txt.length-1));
+        let thermo  = new Thermo(thd_val);
+        
+        /* websocket connection callback */
+        thermo.wsk_callback((ws_p) => {
+            (true === ws_p) ? moni.start() : moni.stop();
+        });
+        
+        /* thermo info receive event */
+        thermo.inf_event((msg) => {
+            try {
+                act.base64("data:image/bmp;base64," + msg.image);
+                temp_val.text(msg.temperature + "");
+            } catch (e) {
+                console.error(e.stack);
+                throw e;
+            }
+        });
+        
+        /* thermo status change event */
+        thermo.sts_event((sts) => {
+            if ("none" === sts) {
+                
+            } else if ("pass") {
+                
+            } else {
+                
+            }
+            console.log(sts);
+        });
+        
+        thermo.start();
     } catch (e) {
         console.error(e.stack);
+        throw e;
     }
 }
+setTimeout(thm_prs,500);
+
 </script>
 
 
@@ -30,24 +72,26 @@ let sw_evt = () => {
 menu_cmp.visible(true);
 </script>
 
-<AppBase title="SeekGate" main-color=[230,255,230]>
+<AppBase title="SeekGate" main-color=[230,255,230] base-color=[253,253,253]>
     <theme>
-        <Text font="serif"></Text>
+        <Text font="Cairo" main-color=[96,131,127]></Text>
     </theme>
+    <style>overflow:hidden;</style>
     
-    <header:navi>
-        <Text size=0.4rem event=Click:@bar_evt>&equiv;</Text>
-    </header:navi>
+    <header:pull>
+        <navi>
+            <Image size=(0.3rem,0.3rem) event=ClickTap:@bar_evt>./img/bars.png</Image>
+        </navi>
+    </header:pull>
     
-    <!-- slides from the right side when bar-text was tapped -->
-    <mf:load name=menu>./mof/slidemenu.mof</mf:load>
-    
-    <!-- display the status of thermo camera -->
-    <mf:load name=moni>./mof/monitor.mof</mf:load>
-    
-    <!-- temperature -->
-    <mf:load name=temp>./mof/temperature.mof</mf:load>
-    
-    <!-- switching the thermal camera on/off when the circle is tapped -->
-    <mf:load name=swch>./mof/switch.mof<mf:load>
+    <div>
+        <!-- slides from the right side when bar-text was tapped -->
+        <mf:load name=menu>./mof/slidemenu.mof</mf:load>
+        <!-- display the status of thermo camera -->
+        <mf:load name=moni>./mof/monitor.mof</mf:load>
+        <!-- temperature -->
+        <mf:load name=temp>./mof/temperature.mof</mf:load>
+        <!-- check result -->
+        <mf:load name=rslt>./mof/result.mof</mf:load>
+    </div>
 </AppBase>
