@@ -16,6 +16,7 @@ const VrtPos=require("mofron-effect-vrtpos");
 const ttrg=require("tetraring4js");
 const Frame=require("mofron-comp-frame");
 const Grid=require("mofron-layout-grid");
+const Fade=require("mofron-effect-fade");
 const comutl=mofron.util.common;
 const cmputl=mofron.util.component;
 try {
@@ -80,6 +81,23 @@ try {
         },
         stop:()=>{
             temp_val.text("-");
+        },
+    }
+    let rslt={
+        none:()=>{
+            alrt_img.visible(false);
+            pass_img.visible(false);
+            ret_txt.text("");
+        },
+        pass:()=>{
+            alrt_img.visible(false);
+            pass_img.visible(true);
+            ret_txt.text("Pass");
+        },
+        alert:()=>{
+            pass_img.visible(false);
+            alrt_img.visible(true);
+            ret_txt.text("Alert!!");
         },
     }
 
@@ -152,9 +170,9 @@ try {
     let cmp0_0_2_1_0=new Text("℃");
     let cmp0_0_2_1=new mofron.class.Component();
     let cmp0_0_2=new mofron.class.Component();
-    let cmp0_0_3_0=new Image();
-    let cmp0_0_3_1=new Image();
-    let cmp0_0_3_2=new Text();
+    let pass_img=new Image();
+    let alrt_img=new Image();
+    let ret_txt=new Text();
     let cmp0_0_3=new mofron.class.Component();
     let cmp0_0=new mofron.class.Component();
     let cmp0=new AppBase();
@@ -165,13 +183,13 @@ try {
     let ths_dlg_3=new SynwWid("-0.05rem");
     let sby_0_0=new HrzPos();
     let sby_0_1=new VrtPos();
-    let cmp0_0_3_0_0=new HrzPos("center");
-    let cmp0_0_3_1_0=new HrzPos("center");
+    let pass_img_0=new HrzPos("center");
+    let alrt_img_0=new HrzPos("center");
     let cmp0_1=new Image("./img/bars.png");
     menu_cmp_1.child([menu_cmp_1_0]);
     cmp0.child([cmp0_0]);
     cmp0_0.child([cmp0_0_0,cmp0_0_1,cmp0_0_2,cmp0_0_3]);
-    cmp0_0_3.child([cmp0_0_3_0,cmp0_0_3_1,cmp0_0_3_2]);
+    cmp0_0_3.child([pass_img,alrt_img,ret_txt]);
     cmp0_0_2.child([cmp0_0_2_0,cmp0_0_2_1]);
     cmp0_0_2_1.child([cmp0_0_2_1_0]);
     cmp0_0_2_0.child([temp_val]);
@@ -196,17 +214,14 @@ try {
     temp_val.config({objkey:"temp_val",size:"1rem",effect:new HrzPos("right")});
     cmp0_0_2_1_0.config({size:"1rem",style:{'margin-left':'0.5rem'}});
     cmp0_0_2.config({layout:new Grid([50,50])});
-    cmp0_0_3_0.config({size:new mofron.class.ConfArg("1.5rem","1.5rem"),style:{'display':'none'},effect:cmp0_0_3_0_0,src:"./img/check.png"});
-    cmp0_0_3_1.config({size:new mofron.class.ConfArg("1.5rem","1.5rem"),style:{'display':'none'},effect:cmp0_0_3_1_0,src:"./img/false.png"});
+    pass_img.config({objkey:"pass_img",size:new mofron.class.ConfArg("1.5rem","1.5rem"),visible:false,effect:pass_img_0,src:"./img/check.png"});
+    alrt_img.config({objkey:"alrt_img",size:new mofron.class.ConfArg("1.5rem","1.5rem"),visible:false,effect:alrt_img_0,src:"./img/false.png"});
+    ret_txt.config({objkey:"ret_txt",effect:new HrzPos("center")});
     cmp0_0_3.config({style:{'margin-top':'-0.5rem'}});
     cmp0_1.config({size:new mofron.class.ConfArg("0.3rem","0.3rem"),event:new ClickTap(bar_evt)});
-    cmp0.config({title:"SeekGate",mainColor:[230,255,230],baseColor:[253,253,253],theme:{Text:{target:null,config:{font:"Cairo",mainColor:[96,131,127]}}},style:{'overflow':'hidden'},header:new mofron.class.PullConf({navi:cmp0_1})});
+    cmp0.config({title:"SeekGate",mainColor:[230,255,230],theme:{Text:{target:null,config:{font:"Cairo",mainColor:[96,131,127]}}},style:{'overflow':'hidden'},header:new mofron.class.PullConf({navi:cmp0_1})});
 
     /* script (before) */
-    window.onbeforeunload = function(e) {
-      console.log('beforeunload');
-      return;
-    };
     sby.height(156 * (window.innerWidth/208) + 'px');
     act.height(156 * (window.innerWidth/208) + 'px');
 
@@ -241,13 +256,13 @@ try {
                 /* thermo status change event */
                 thermo.sts_event((sts) => {
                     if ("none" === sts) {
-                        
+                        rslt.none();
                     } else if ("pass") {
-                        
+                        rslt.pass();
                     } else {
-                        
+                        rslt.alert();
                     }
-                    console.log(sts);
+                    //console.log(sts);
                 });
                 
                 thermo.start();
@@ -257,7 +272,6 @@ try {
             }
         }
         setTimeout(thm_prs,500);
-        
         let req  = new XMLHttpRequest();
         req.onreadystatechange = function () {
             if ( (this.readyState == 4) &&      // READYSTATE_COMPLETED
