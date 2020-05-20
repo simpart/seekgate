@@ -216,7 +216,7 @@ try {
     cmp0_0_2.config({layout:new Grid([50,50])});
     pass_img.config({objkey:"pass_img",size:new mofron.class.ConfArg("1.5rem","1.5rem"),visible:false,effect:pass_img_0,src:"./img/check.png"});
     alrt_img.config({objkey:"alrt_img",size:new mofron.class.ConfArg("1.5rem","1.5rem"),visible:false,effect:alrt_img_0,src:"./img/false.png"});
-    ret_txt.config({objkey:"ret_txt",effect:new HrzPos("center")});
+    ret_txt.config({objkey:"ret_txt",effect:new HrzPos("center"),size:"0.5rem"});
     cmp0_0_3.config({style:{'margin-top':'-0.5rem'}});
     cmp0_1.config({size:new mofron.class.ConfArg("0.3rem","0.3rem"),event:new ClickTap(bar_evt)});
     cmp0.config({title:"SeekGate",mainColor:[230,255,230],theme:{Text:{target:null,config:{font:"Cairo",mainColor:[96,131,127]}}},style:{'overflow':'hidden'},header:new mofron.class.PullConf({navi:cmp0_1})});
