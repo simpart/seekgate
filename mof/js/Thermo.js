@@ -39,6 +39,7 @@ class Thermo {
                 'close',
                 (e) => { 
                     thermo.wsk_callback()(false);
+		    thermo.start();
                 }
             );
 	    setTimeout(
