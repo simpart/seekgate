@@ -47,7 +47,7 @@ let thm_prs = () => {
             } else {
                 rslt.alert();
             }
-            //console.log(sts);
+            console.log(sts);
         });
         
         thermo.start();

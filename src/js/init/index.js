@@ -262,7 +262,7 @@ try {
                     } else {
                         rslt.alert();
                     }
-                    //console.log(sts);
+                    console.log(sts);
                 });
                 
                 thermo.start();
