@@ -257,7 +257,7 @@ try {
                 thermo.sts_event((sts) => {
                     if ("none" === sts) {
                         rslt.none();
-                    } else if ("pass") {
+                    } else if ("pass" === sts) {
                         rslt.pass();
                     } else {
                         rslt.alert();
