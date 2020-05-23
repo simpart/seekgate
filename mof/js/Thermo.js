@@ -45,7 +45,7 @@ class Thermo {
 	    setTimeout(
 	        () => {
 		    if (false === ws_conn) {
-		        alert("failed connect to thermo camera");
+		        console.error("failed connect to thermo camera");
 		    }
 		},
 		5000
