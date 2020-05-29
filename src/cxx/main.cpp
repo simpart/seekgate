@@ -6,8 +6,6 @@
 
 #include <unistd.h>
 
-#define WSCK_PORT 5000
-
 #define IMGSIZE_BASE64 129864 + 1
 #define MSG_BUFSIZE IMGSIZE_BASE64 + 128
 
@@ -47,7 +45,8 @@ int main (int argc,char *argv[]) {
         
         /* start websocket */
         pthread_create(&tid, NULL, wsck_run, &port);
-        
+       
+        int dbg_count = 0; 
 	while (service_loop) {
             if (0 >= wsck_count()) {
                 sleep(5);
@@ -70,7 +69,8 @@ int main (int argc,char *argv[]) {
                 img_buf,
                 info.temperature.max
             );
-
+            
+            dbg_count++;
             //printf("send len:%d\n", strlen((char *)msg));
             wsck_sendall(msg, strlen((char *)msg));
         }
