@@ -82,6 +82,7 @@ int main (int argc,char *argv[]) {
         return 0;
     } catch (char const* err) {
         cout << "[error]" << err << ": " << __FILE__ << " -> " << __LINE__ << endl;
+        return -1;
     }
 }
 /* end of file */
