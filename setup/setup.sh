@@ -37,6 +37,6 @@ cp $SCP_DIR/seekgate.service /etc/systemd/system/
 systemctl enable seekgate
 systemctl start seekgate
 
-echo initialize seekgate was successfully
+echo setup seekgate was successfully
 echo access to http://127.0.0.1/seekgate
 
