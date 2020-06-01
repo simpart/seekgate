@@ -41,5 +41,5 @@ systemctl enable seekgate
 systemctl start seekgate
 
 echo setup seekgate was successfully
-echo access to http://127.0.0.1/seekgate
+echo please connect seekthermal and access to http://127.0.0.1/seekgate
 
