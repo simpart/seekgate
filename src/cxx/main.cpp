@@ -45,12 +45,28 @@ int main (int argc,char *argv[]) {
         
         /* start websocket */
         pthread_create(&tid, NULL, wsck_run, &port);
+<<<<<<< HEAD
        
         int dbg_count = 0; 
 	while (service_loop) {
             if (0 >= wsck_count()) {
                 sleep(5);
                 continue;
+=======
+<<<<<<< HEAD
+       
+        int dbg_count = 0; 
+	while (service_loop) {
+            if (0 >= wsck_count()) {
+                sleep(5);
+                continue;
+=======
+        
+	while (service_loop) {
+            if (0 >= wsck_count()) {
+                sleep(5);
+>>>>>>> master
+>>>>>>> 45c5fc26e85a024a44d115232fb0dd1330b3fcea
             }
             
             memset(msg, 0x00, MSG_BUFSIZE - LWS_PRE);
@@ -69,8 +85,17 @@ int main (int argc,char *argv[]) {
                 img_buf,
                 info.temperature.max
             );
+<<<<<<< HEAD
             
             dbg_count++;
+=======
+<<<<<<< HEAD
+            
+            dbg_count++;
+=======
+
+>>>>>>> master
+>>>>>>> 45c5fc26e85a024a44d115232fb0dd1330b3fcea
             //printf("send len:%d\n", strlen((char *)msg));
             wsck_sendall(msg, strlen((char *)msg));
         }
@@ -82,7 +107,14 @@ int main (int argc,char *argv[]) {
         return 0;
     } catch (char const* err) {
         cout << "[error]" << err << ": " << __FILE__ << " -> " << __LINE__ << endl;
+<<<<<<< HEAD
         return -1;
+=======
+<<<<<<< HEAD
+        return -1;
+=======
+>>>>>>> master
+>>>>>>> 45c5fc26e85a024a44d115232fb0dd1330b3fcea
     }
 }
 /* end of file */
