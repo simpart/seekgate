@@ -7,6 +7,7 @@ apt-get install -y apache2 libusb-1.0-0-dev cmake libssl-dev
 systemctl enable apache2
 
 mv $SCP_DIR/../../seekgate /var/www/html/
+SCP_DIR=/var/www/html/seekgate/setup/
 
 # install seekthermal library
 git clone https://github.com/simpart/seekutil.git /usr/local/src/seekutil
