@@ -30,53 +30,37 @@ int main (int argc,char *argv[]) {
         unsigned char * msg = NULL;
         SeekUtil seek;
         SeekInfo info;
-        
+
         /* set ctrl+c quit */
         if (signal(SIGINT, sigevt) == SIG_ERR) {
             throw "SIGINT error";
         }
-        
+
         msg = (unsigned char *) malloc(MSG_BUFSIZE + LWS_PRE);
         memset(msg, 0x00, MSG_BUFSIZE + LWS_PRE);
         msg += LWS_PRE;
-        
+
         char *img_buf = (char *) malloc(IMGSIZE_BASE64);
         memset(img_buf, 0x00, sizeof(IMGSIZE_BASE64));
-        
+
         /* start websocket */
         pthread_create(&tid, NULL, wsck_run, &port);
-<<<<<<< HEAD
-       
-        int dbg_count = 0; 
-	while (service_loop) {
+
+        int dbg_count = 0;
+        while (service_loop) {
             if (0 >= wsck_count()) {
                 sleep(5);
                 continue;
-=======
-<<<<<<< HEAD
-       
-        int dbg_count = 0; 
-	while (service_loop) {
-            if (0 >= wsck_count()) {
-                sleep(5);
-                continue;
-=======
-        
-	while (service_loop) {
-            if (0 >= wsck_count()) {
-                sleep(5);
->>>>>>> master
->>>>>>> 45c5fc26e85a024a44d115232fb0dd1330b3fcea
             }
-            
+
             memset(msg, 0x00, MSG_BUFSIZE - LWS_PRE);
             /* get thermo information */
             seek.getinfo(&info);
             /* convert bmp to base64 */
             base64(img_buf, IMGSIZE_BASE64, (const unsigned char *) info.image, sizeof(info.image));
-            
+
             //printf("base64 len:%d\n", strlen(img_buf));
-            
+
             /* generate json string */
             snprintf(
                 (char *) msg,
@@ -85,36 +69,20 @@ int main (int argc,char *argv[]) {
                 img_buf,
                 info.temperature.max
             );
-<<<<<<< HEAD
-            
-            dbg_count++;
-=======
-<<<<<<< HEAD
-            
-            dbg_count++;
-=======
 
->>>>>>> master
->>>>>>> 45c5fc26e85a024a44d115232fb0dd1330b3fcea
+            dbg_count++;
             //printf("send len:%d\n", strlen((char *)msg));
             wsck_sendall(msg, strlen((char *)msg));
         }
-        
+
         free(msg - LWS_PRE);
         free(img_buf);
         pthread_join(tid, NULL);
-        
+
         return 0;
     } catch (char const* err) {
         cout << "[error]" << err << ": " << __FILE__ << " -> " << __LINE__ << endl;
-<<<<<<< HEAD
         return -1;
-=======
-<<<<<<< HEAD
-        return -1;
-=======
->>>>>>> master
->>>>>>> 45c5fc26e85a024a44d115232fb0dd1330b3fcea
     }
 }
 /* end of file */

@@ -14,13 +14,6 @@
     </access-style>
 </setting>
 
-<!--
-<script src="./mof/js/Thermo.js" run=init></script>
-<script run=after>
-let thermo = new Thermo([moni, temp, swch]);
-</script>
--->
-
 <script src="./mof/js/Thermo.js" run=after></script>
 <script run=after>
 let thm_prs = () => {
@@ -48,11 +41,11 @@ let thm_prs = () => {
         /* thermo status change event */
         thermo.sts_event((sts) => {
             if ("none" === sts) {
-                
-            } else if ("pass") {
-                
+                rslt.none();
+            } else if ("pass" === sts) {
+                rslt.pass();
             } else {
-                
+                rslt.alert();
             }
             console.log(sts);
         });
@@ -64,7 +57,6 @@ let thm_prs = () => {
     }
 }
 setTimeout(thm_prs,500);
-
 </script>
 
 
@@ -72,7 +64,7 @@ setTimeout(thm_prs,500);
 menu_cmp.visible(true);
 </script>
 
-<AppBase title="SeekGate" main-color=[230,255,230] base-color=[253,253,253]>
+<AppBase title="SeekGate" main-color=[230,255,230]>
     <theme>
         <Text font="Cairo" main-color=[96,131,127]></Text>
     </theme>

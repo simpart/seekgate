@@ -8,6 +8,11 @@ class Thermo {
 	    }
 	    this.m_threshold = thd;
 	    this.m_status    = "none";
+	    
+	    thm_obj = this;
+	    window.onbeforeunload = () => {
+	        thm_obj.close();
+            };
 	} catch (e) {
             console.error(e.stack);
 	    throw e;
@@ -34,12 +39,13 @@ class Thermo {
                 'close',
                 (e) => { 
                     thermo.wsk_callback()(false);
+		    thermo.start();
                 }
             );
 	    setTimeout(
 	        () => {
 		    if (false === ws_conn) {
-		        alert("failed connect to thermo camera");
+		        console.error("failed connect to thermo camera");
 		    }
 		},
 		5000
@@ -55,7 +61,7 @@ class Thermo {
 		    let msg_obj = JSON.parse(msg.data);
                     thermo.inf_event()(msg_obj);
                     let cur_sts = null;
-                    if ((this.m_threshold - 3) > msg_obj.temperature) {
+                    if ((this.m_threshold - 1) > msg_obj.temperature) {
                         cur_sts = "none";
 		    } else if (this.m_threshold > msg_obj.temperature) {
                         cur_sts = "pass";
@@ -73,6 +79,15 @@ class Thermo {
             console.error(e.stack);
             throw e;
 	}
+    }
+      
+    close () {
+        try {
+	    this.m_wsock.close();
+	} catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
     }
 
     wsk_callback (fnc) {

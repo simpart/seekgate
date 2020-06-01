@@ -1,20 +1,41 @@
 <setting>
     <tag load="mofron-comp-image">Image</tag>
+    <tag load="mofron-effect-fade">Fade</tag>
     <tag load="mofron-effect-hrzpos">HrzPos</tag>
 </setting>
 
+<script name=none run=external>
+alrt_img.visible(false);
+pass_img.visible(false);
+ret_txt.text("");
+</script>
+
+<script name=pass run=external>
+alrt_img.visible(false);
+pass_img.visible(true);
+ret_txt.text("Pass");
+</script>
+
+<script name=alert run=external>
+pass_img.visible(false);
+alrt_img.visible(true);
+ret_txt.text("Alert!!");
+</script>
+
 <div style="margin-top:-0.5rem;">
-    <Image size=(1.5rem,1.5rem) style="display:none;">
+    <Image name=pass_img size=(1.5rem,1.5rem) visible=false>
         <effect>
             <HrzPos>center</HrzPos>
         </effect>
         <src>./img/check.png</src>
     </Image>
-    <Image size=(1.5rem,1.5rem) style="display:none;">
+    <Image name=alrt_img size=(1.5rem,1.5rem) visible=false>
         <effect>
             <HrzPos>center</HrzPos>
         </effect>
         <src>./img/false.png</src>
     </Image>
-    <Text></Text>
+    <Text name=ret_txt effect=HrzPos:center size=0.5rem>
+        <style>position:relative;top:-0.3rem;</style>
+    </Text>
 </div>

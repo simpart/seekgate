@@ -1,0 +1,11 @@
+[Unit]
+Description=seekgate daemon
+After=syslog.target network.target auditd.service
+
+[Service]
+ExecStart = /usr/local/sbin/seekgate
+Restart = on-failure
+Type = simple
+
+[Install]
+WantedBy=multi-user.target

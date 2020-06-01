@@ -16,6 +16,7 @@ const VrtPos=require("mofron-effect-vrtpos");
 const ttrg=require("tetraring4js");
 const Frame=require("mofron-comp-frame");
 const Grid=require("mofron-layout-grid");
+const Fade=require("mofron-effect-fade");
 const comutl=mofron.util.common;
 const cmputl=mofron.util.component;
 try {
@@ -80,6 +81,23 @@ try {
         },
         stop:()=>{
             temp_val.text("-");
+        },
+    }
+    let rslt={
+        none:()=>{
+            alrt_img.visible(false);
+            pass_img.visible(false);
+            ret_txt.text("");
+        },
+        pass:()=>{
+            alrt_img.visible(false);
+            pass_img.visible(true);
+            ret_txt.text("Pass");
+        },
+        alert:()=>{
+            pass_img.visible(false);
+            alrt_img.visible(true);
+            ret_txt.text("Alert!!");
         },
     }
 
@@ -152,9 +170,9 @@ try {
     let cmp0_0_2_1_0=new Text("℃");
     let cmp0_0_2_1=new mofron.class.Component();
     let cmp0_0_2=new mofron.class.Component();
-    let cmp0_0_3_0=new Image();
-    let cmp0_0_3_1=new Image();
-    let cmp0_0_3_2=new Text();
+    let pass_img=new Image();
+    let alrt_img=new Image();
+    let ret_txt=new Text();
     let cmp0_0_3=new mofron.class.Component();
     let cmp0_0=new mofron.class.Component();
     let cmp0=new AppBase();
@@ -165,13 +183,13 @@ try {
     let ths_dlg_3=new SynwWid("-0.05rem");
     let sby_0_0=new HrzPos();
     let sby_0_1=new VrtPos();
-    let cmp0_0_3_0_0=new HrzPos("center");
-    let cmp0_0_3_1_0=new HrzPos("center");
+    let pass_img_0=new HrzPos("center");
+    let alrt_img_0=new HrzPos("center");
     let cmp0_1=new Image("./img/bars.png");
     menu_cmp_1.child([menu_cmp_1_0]);
     cmp0.child([cmp0_0]);
     cmp0_0.child([cmp0_0_0,cmp0_0_1,cmp0_0_2,cmp0_0_3]);
-    cmp0_0_3.child([cmp0_0_3_0,cmp0_0_3_1,cmp0_0_3_2]);
+    cmp0_0_3.child([pass_img,alrt_img,ret_txt]);
     cmp0_0_2.child([cmp0_0_2_0,cmp0_0_2_1]);
     cmp0_0_2_1.child([cmp0_0_2_1_0]);
     cmp0_0_2_0.child([temp_val]);
@@ -196,11 +214,12 @@ try {
     temp_val.config({objkey:"temp_val",size:"1rem",effect:new HrzPos("right")});
     cmp0_0_2_1_0.config({size:"1rem",style:{'margin-left':'0.5rem'}});
     cmp0_0_2.config({layout:new Grid([50,50])});
-    cmp0_0_3_0.config({size:new mofron.class.ConfArg("1.5rem","1.5rem"),style:{'display':'none'},effect:cmp0_0_3_0_0,src:"./img/check.png"});
-    cmp0_0_3_1.config({size:new mofron.class.ConfArg("1.5rem","1.5rem"),style:{'display':'none'},effect:cmp0_0_3_1_0,src:"./img/false.png"});
+    pass_img.config({objkey:"pass_img",size:new mofron.class.ConfArg("1.5rem","1.5rem"),visible:false,effect:pass_img_0,src:"./img/check.png"});
+    alrt_img.config({objkey:"alrt_img",size:new mofron.class.ConfArg("1.5rem","1.5rem"),visible:false,effect:alrt_img_0,src:"./img/false.png"});
+    ret_txt.config({objkey:"ret_txt",effect:new HrzPos("center"),size:"0.5rem",style:{'position':'relative','top':'-0.3rem'}});
     cmp0_0_3.config({style:{'margin-top':'-0.5rem'}});
     cmp0_1.config({size:new mofron.class.ConfArg("0.3rem","0.3rem"),event:new ClickTap(bar_evt)});
-    cmp0.config({title:"SeekGate",mainColor:[230,255,230],baseColor:[253,253,253],theme:{Text:{target:null,config:{font:"Cairo",mainColor:[96,131,127]}}},style:{'overflow':'hidden'},header:new mofron.class.PullConf({navi:cmp0_1})});
+    cmp0.config({title:"SeekGate",mainColor:[230,255,230],theme:{Text:{target:null,config:{font:"Cairo",mainColor:[96,131,127]}}},style:{'overflow':'hidden'},header:new mofron.class.PullConf({navi:cmp0_1})});
 
     /* script (before) */
     sby.height(156 * (window.innerWidth/208) + 'px');
@@ -211,7 +230,7 @@ try {
     root_cmp.visible(true,() => {try{
 
         /* script (after) */
-        class Thermo{constructor(t){try{if("number"!=typeof t)throw new Error("invalid parameter");this.m_threshold=t,this.m_status="none"}catch(t){throw console.error(t.stack),t}}start(){try{this.m_wsock=new WebSocket("ws:/"+location.host+":5000","thermo");let t=this,r=!1;this.m_wsock.addEventListener("open",e=>{r=!0,t.wsk_callback()(!0)}),this.m_wsock.addEventListener("close",r=>{t.wsk_callback()(!1)}),setTimeout(()=>{!1===r&&alert("failed connect to thermo camera")},5e3),this.m_wsock.addEventListener("message",r=>{if(""===r.data)return;let e=JSON.parse(r.data);t.inf_event()(e);let o=null;o=this.m_threshold-3>e.temperature?"none":this.m_threshold>e.temperature?"pass":"alert",this.m_status!==o&&(this.m_status=o,t.sts_event()(o))})}catch(t){throw console.error(t.stack),t}}wsk_callback(t){try{if(void 0===t){if(void 0===this.m_wskcb)throw new Error("could not find callback");return this.m_wskcb}if("function"!=typeof t)throw new Error("invalid parameter");this.m_wskcb=t}catch(t){throw console.error(t.stack),t}}inf_event(t){try{if(void 0===t){if(void 0===this.m_infcb)throw new Error("could not find event");return this.m_infcb}if("function"!=typeof t)throw new Error("invalid parameter");this.m_infcb=t}catch(t){throw console.error(t.stack),t}}sts_event(t){try{if(void 0===t){if(void 0===this.m_stscb)throw new Error("could not find event");return this.m_stscb}if("function"!=typeof t)throw new Error("invalid parameter");this.m_stscb=t}catch(t){throw console.error(t.stack),t}}}
+        class Thermo{constructor(t){try{if("number"!=typeof t)throw new Error("invalid parameter");this.m_threshold=t,this.m_status="none",thm_obj=this,window.onbeforeunload=()=>{thm_obj.close()}}catch(t){throw console.error(t.stack),t}}start(){try{this.m_wsock=new WebSocket("ws:/"+location.host+":5000","thermo");let t=this,r=!1;this.m_wsock.addEventListener("open",e=>{r=!0,t.wsk_callback()(!0)}),this.m_wsock.addEventListener("close",r=>{t.wsk_callback()(!1),t.start()}),setTimeout(()=>{!1===r&&console.error("failed connect to thermo camera")},5e3),this.m_wsock.addEventListener("message",r=>{if(""===r.data)return;let e=JSON.parse(r.data);t.inf_event()(e);let o=null;o=this.m_threshold-1>e.temperature?"none":this.m_threshold>e.temperature?"pass":"alert",this.m_status!==o&&(this.m_status=o,t.sts_event()(o))})}catch(t){throw console.error(t.stack),t}}close(){try{this.m_wsock.close()}catch(t){throw console.error(t.stack),t}}wsk_callback(t){try{if(void 0===t){if(void 0===this.m_wskcb)throw new Error("could not find callback");return this.m_wskcb}if("function"!=typeof t)throw new Error("invalid parameter");this.m_wskcb=t}catch(t){throw console.error(t.stack),t}}inf_event(t){try{if(void 0===t){if(void 0===this.m_infcb)throw new Error("could not find event");return this.m_infcb}if("function"!=typeof t)throw new Error("invalid parameter");this.m_infcb=t}catch(t){throw console.error(t.stack),t}}sts_event(t){try{if(void 0===t){if(void 0===this.m_stscb)throw new Error("could not find event");return this.m_stscb}if("function"!=typeof t)throw new Error("invalid parameter");this.m_stscb=t}catch(t){throw console.error(t.stack),t}}}
         let thm_prs = () => {
             try {
                 let thd_txt = dropd.text()[dropd.select()].text();
@@ -237,11 +256,11 @@ try {
                 /* thermo status change event */
                 thermo.sts_event((sts) => {
                     if ("none" === sts) {
-                        
-                    } else if ("pass") {
-                        
+                        rslt.none();
+                    } else if ("pass" === sts) {
+                        rslt.pass();
                     } else {
-                        
+                        rslt.alert();
                     }
                     console.log(sts);
                 });
@@ -253,7 +272,6 @@ try {
             }
         }
         setTimeout(thm_prs,500);
-        
         let req  = new XMLHttpRequest();
         req.onreadystatechange = function () {
             if ( (this.readyState == 4) &&      // READYSTATE_COMPLETED
