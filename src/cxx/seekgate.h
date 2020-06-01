@@ -9,6 +9,12 @@
 
 #include <libwebsockets.h>
 
+<<<<<<< HEAD
+#define WSCK_PORT 5000
+#define WSCK_MAXCLIENT 5
+
+=======
+>>>>>>> master
 void * wsck_run (void *);
 void wsck_sendall (unsigned char *, size_t);
 int wsck_count (void);

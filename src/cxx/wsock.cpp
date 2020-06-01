@@ -7,6 +7,13 @@
 using namespace std;
 
 int client_count = 0;
+<<<<<<< HEAD
+struct lws *lws_list[WSCK_MAXCLIENT] = { NULL };
+
+extern int service_loop;
+static lws_protocols wsck_prot[] = {
+    { "thermo", wsck_callback, 0, 0 },
+=======
 struct per_session_data__minimal *head;
 
 struct msg {
@@ -34,6 +41,7 @@ struct per_vhost_data__minimal {
 extern int service_loop;
 static lws_protocols wsck_prot[] = {
     { "thermo", wsck_callback, sizeof(struct per_session_data__minimal), 128, 0, NULL, 0 },
+>>>>>>> master
     { NULL,     NULL,          0, 0 } /* terminator */
 };
 
@@ -41,6 +49,29 @@ struct lws_context *wsck_contxt = NULL;
 
 static int wsck_callback ( struct lws *wsi, enum lws_callback_reasons reason, void *user, void *in, size_t len ) {
     try {
+<<<<<<< HEAD
+        
+        if (LWS_CALLBACK_ESTABLISHED == reason) {
+            for (int add_idx=0; add_idx < 5 ;add_idx) {
+                if (NULL == lws_list[add_idx]) {
+                    lws_list[add_idx] = wsi;
+                    break;
+                }
+            }
+            client_count++;
+            printf("established: client count is %d\n", client_count);
+        } else if ((LWS_CALLBACK_WS_PEER_INITIATED_CLOSE == reason) || (LWS_CALLBACK_WSI_DESTROY == reason)) {
+            
+            for (int del_idx=0; del_idx < 5 ;del_idx++) {
+                if (lws_list[del_idx] == wsi) {
+                    lws_list[del_idx] = NULL;
+                    client_count--;
+                    printf("disconnected: client count is %d\n", client_count);
+                    break;
+                }
+            }
+        }            
+=======
         struct per_session_data__minimal *pss = (struct per_session_data__minimal *)user;
 	struct per_vhost_data__minimal   *vhd = (struct per_vhost_data__minimal *)
 			lws_protocol_vh_priv_get(lws_get_vhost(wsi), lws_get_protocol(wsi));
@@ -76,6 +107,7 @@ static int wsck_callback ( struct lws *wsi, enum lws_callback_reasons reason, vo
         }
 
         //printf("websock\n");
+>>>>>>> master
         return 0;
     } catch (char const* err) {
         cout << "[error]" << err << ": " << __FILE__ << " -> " << __LINE__ << endl;
@@ -85,12 +117,19 @@ static int wsck_callback ( struct lws *wsi, enum lws_callback_reasons reason, vo
 
 void wsck_sendall (unsigned char *buf, size_t len) {
     try {
+<<<<<<< HEAD
+        for (int i=0; i < 5 ;i++) {
+            if (NULL != lws_list[i]) {
+                lws_write(lws_list[i], buf, len, LWS_WRITE_TEXT);
+            }
+=======
         struct per_session_data__minimal *cur = head;
         
         for (int i=client_count; i > 0 ;i--) {
             //printf("send wsi:%p\n", cur->wsi);
             lws_write(cur->wsi, buf, len, LWS_WRITE_TEXT);
             cur = cur->pss_list;
+>>>>>>> master
         }
     } catch (char const* err) {
         cout << "[error]" << err << ": " << __FILE__ << " -> " << __LINE__ << endl;
@@ -114,7 +153,10 @@ void * wsck_run (void *prm) {
         
         while (service_loop) {
             lws_service( wsck_contxt, /* timeout_ms = */ 1000000 );
+<<<<<<< HEAD
+=======
             //printf("wsock\n");
+>>>>>>> master
         }
         
         lws_context_destroy(wsck_contxt);

@@ -6,8 +6,11 @@
 
 #include <unistd.h>
 
+<<<<<<< HEAD
+=======
 #define WSCK_PORT 5000
 
+>>>>>>> master
 #define IMGSIZE_BASE64 129864 + 1
 #define MSG_BUFSIZE IMGSIZE_BASE64 + 128
 
@@ -47,10 +50,19 @@ int main (int argc,char *argv[]) {
         
         /* start websocket */
         pthread_create(&tid, NULL, wsck_run, &port);
+<<<<<<< HEAD
+       
+        int dbg_count = 0; 
+	while (service_loop) {
+            if (0 >= wsck_count()) {
+                sleep(5);
+                continue;
+=======
         
 	while (service_loop) {
             if (0 >= wsck_count()) {
                 sleep(5);
+>>>>>>> master
             }
             
             memset(msg, 0x00, MSG_BUFSIZE - LWS_PRE);
@@ -69,7 +81,12 @@ int main (int argc,char *argv[]) {
                 img_buf,
                 info.temperature.max
             );
+<<<<<<< HEAD
+            
+            dbg_count++;
+=======
 
+>>>>>>> master
             //printf("send len:%d\n", strlen((char *)msg));
             wsck_sendall(msg, strlen((char *)msg));
         }
@@ -81,6 +98,10 @@ int main (int argc,char *argv[]) {
         return 0;
     } catch (char const* err) {
         cout << "[error]" << err << ": " << __FILE__ << " -> " << __LINE__ << endl;
+<<<<<<< HEAD
+        return -1;
+=======
+>>>>>>> master
     }
 }
 /* end of file */
