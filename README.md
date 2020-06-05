@@ -12,5 +12,7 @@ sudo ./setup/setup.sh
 ```
 
 # system overview
+![system](https://simpart.github.io/seekgate/img/system_overview.png)
+
 
 
