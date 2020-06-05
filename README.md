@@ -11,8 +11,22 @@ The concept of this project is to make it possible to build a simple thermo chec
 sudo ./setup/setup.sh
 ```
 
+# usage
+start checker
+```
+sudo sytemctl start seekgate
+```
+! it does not run the camera immediately, the camera run when anyone accesses by a browser.
+
+please access http://(pi_addr)/seekgate.
+
+
+stop checker
+```
+sudo sytemctl stop seekgate
+```
+
 # system overview
 ![system](https://simpart.github.io/seekgate/img/system_overview.png)
-
 
 
